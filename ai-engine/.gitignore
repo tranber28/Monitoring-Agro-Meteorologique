@@ -1,0 +1,4 @@
+ai-engine/models/history.csv
+ai-engine/models/*.pkl
+__pycache__/
+.env
