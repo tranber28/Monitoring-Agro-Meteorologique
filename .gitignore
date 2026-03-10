@@ -49,6 +49,16 @@ homeassistant/config/.storage/
 homeassistant/config/*.log*
 homeassistant/config/*.db*
 
+# Home Assistant
+homeassistant/config/.storage/
+homeassistant/config/*.log*
+homeassistant/config/*.db*
+homeassistant/config/.HA_VERSION
+homeassistant/config/.ha_run.lock
+
+# MariaDB
+mariadb-data/
+
 # Scripts et utilitaires divers
 container-monitor/fix.sh
 mariadb-agro/OLD/
