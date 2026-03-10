@@ -1,0 +1,59 @@
+# Projet homeassistant - HA + code-server + mqtt-explorer
+# ⚠️ À CONFIGURER: Modifier les mots de passe ci-dessous
+
+networks:
+  lora-network:
+    external: true
+    name: lora-network
+
+services:
+
+  homeassistant:
+    image: homeassistant/home-assistant:latest
+    container_name: homeassistant
+    restart: unless-stopped
+    privileged: true
+    security_opt:
+      - label=disable
+    ports:
+      - "8123:8123"
+    volumes:
+      - ./config:/config:rw
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - lora-network
+
+  file-editor:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: file-editor
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+      - PASSWORD=XXXX  # À CHANGER: mot de passe code-server
+      - DEFAULT_WORKSPACE=/config/workspace
+    ports:
+      - "3218:8443"
+    volumes:
+      - ./config:/config/workspace:rw
+    networks:
+      - lora-network
+
+  mqtt-explorer:
+    image: smeagolworms4/mqtt-explorer:latest
+    container_name: mqtt-explorer
+    restart: unless-stopped
+    environment:
+      - HTTP_USER=XXXX  # À CHANGER: utilisateur MQTT Explorer
+      - HTTP_PASSWORD=XXXX  # À CHANGER: mot de passe MQTT Explorer
+      - HTTP_PORT=4000
+      - CONFIG_PATH=/mqtt-explorer/config
+      - SSL_KEY_PATH=
+      - SSL_CERT_PATH=
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./mqtt-explorer-config:/mqtt-explorer/config:rw
+    networks:
+      - lora-network

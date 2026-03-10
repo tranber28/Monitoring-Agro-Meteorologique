@@ -1,0 +1,20 @@
+# Projet mqtt-to-db
+# ⚠️ À CONFIGURER: Modifier les mots de passe ci-dessous
+
+services:
+  mqtt-to-db:
+    build: .
+    container_name: mqtt-to-db
+    restart: unless-stopped
+    networks:
+      - lora-network
+    environment:
+      - MQTT_BROKER=mosquitto
+      - DB_HOST=mariadb-agro
+      - DB_USER=XXXX  # À CHANGER: utilisateur BDD
+      - DB_PASSWORD=XXXX  # À CHANGER: mot de passe BDD
+      - DB_NAME=agro_monitoring
+    command: python -u mqtt-to-db.py 
+networks:
+  lora-network:
+    external: true

@@ -1,0 +1,19 @@
+# Projet dockge - Gestionnaire de containers
+# ⚠️ À CONFIGURER: Modifier le chemin vers vos stacks
+
+services:
+  dockge:
+    image: louislam/dockge:1
+    restart: unless-stopped
+    ports:
+      # Host Port : Container Port
+      - 5001:5001
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/app/data
+      # Stacks Directory - À CHANGER: chemin vers vos stacks
+      - /home/VOTRE_USER/docker/dockge/stacks:/home/VOTRE_USER/docker/dockge/stacks
+    environment:
+      # Tell Dockge where is your stacks directory
+      - DOCKGE_STACKS_DIR=/home/VOTRE_USER/docker/dockge/stacks
+      - DOCKGE_ENABLE_CONSOLE=true

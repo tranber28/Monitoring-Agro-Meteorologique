@@ -1,0 +1,65 @@
+[[regions]]
+id="eu868"
+description="EU868"
+
+[regions.common]
+name="EU868"
+
+[regions.gateway]
+force_gws_private=false
+
+  [regions.gateway.backend]
+  enabled="mqtt"
+
+    [regions.gateway.backend.mqtt]
+    topic_prefix="eu868"
+    server="tcp://mosquitto:1883"
+    username=""
+    password=""
+    qos=0
+    clean_session=true
+    client_id="chirpstack-gw-eu868"
+
+# -----------------------
+# LoRaWAN CHANNELS
+# -----------------------
+
+[[regions.network.channels]]
+frequency=868100000
+min_dr=0
+max_dr=5
+
+[[regions.network.channels]]
+frequency=868300000
+min_dr=0
+max_dr=5
+
+[[regions.network.channels]]
+frequency=868500000
+min_dr=0
+max_dr=5
+
+[[regions.network.channels]]
+frequency=868700000
+min_dr=0
+max_dr=5
+
+[[regions.network.channels]]
+frequency=868900000
+min_dr=0
+max_dr=5
+
+[[regions.network.channels]]
+frequency=869100000
+min_dr=0
+max_dr=5
+
+[[regions.network.channels]]
+frequency=869300000
+min_dr=0
+max_dr=5
+
+[[regions.network.channels]]
+frequency=869500000
+min_dr=0
+max_dr=5

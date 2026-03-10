@@ -1,0 +1,18 @@
+services:
+  container-monitor:
+    image: python:3.11-slim
+    container_name: container-monitor
+    restart: unless-stopped
+    networks:
+      - lora-network
+    command: >
+      sh -c "pip install paho-mqtt docker -q && python -u /app/container-monitor.py"
+    environment:
+      - MQTT_BROKER=mosquitto
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./container-monitor.py:/app/container-monitor.py:ro
+
+networks:
+  lora-network:
+    external: true

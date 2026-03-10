@@ -1,0 +1,36 @@
+[logging]
+  level = "info"
+
+[postgresql]
+  dsn = "postgres://XXXX:XXXX@chirpstack-postgres/chirpstack?sslmode=disable"
+
+[redis]
+  servers = ["redis://chirpstack-redis/"]
+
+[network]
+  net_id = "000000"
+  enabled_regions = ["eu868"]
+
+[gateway]
+  [gateway.mqtt]
+    event_topic = "gateway/{{ .GatewayID }}/event/{{ .EventType }}"
+    state_topic = "gateway/{{ .GatewayID }}/state/{{ .StateType }}"
+    command_topic = "gateway/{{ .GatewayID }}/command/#"
+
+[api]
+  bind = "0.0.0.0:8080"
+  secret = "XXXX"  # À CHANGER: clé API
+
+[integration]
+  enabled = ["mqtt"]
+
+  [integration.mqtt]
+    server = "tcp://mosquitto:1883"
+    username = ""
+    password = ""
+    qos = 0
+    clean_session = true
+    client_id = ""
+    event_topic_template = "eu868/gateway/{{ .GatewayID }}/event/{{ .EventType }}"
+    state_topic_template = "eu868/gateway/{{ .GatewayID }}/state/{{ .StateType }}"
+    command_topic_template = "eu868/gateway/{{ .GatewayID }}/command/#"

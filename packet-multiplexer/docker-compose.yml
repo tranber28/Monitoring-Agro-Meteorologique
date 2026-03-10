@@ -1,0 +1,14 @@
+networks:
+  lora-network:
+    external: true
+    name: lora-network
+services:
+  packet-multiplexer:
+    image: chirpstack/chirpstack-packet-multiplexer:4.0.0-test.3
+    container_name: packet-multiplexer
+    restart: unless-stopped
+    command: -c /etc/chirpstack-packet-multiplexer/chirpstack-packet-multiplexer.toml
+    volumes:
+      - ./config:/etc/chirpstack-packet-multiplexer:rw
+    networks:
+      - lora-network

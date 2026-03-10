@@ -1,0 +1,14 @@
+[logging]
+level = "DEBUG"
+
+[multiplexer]
+bind = "0.0.0.0:1700"
+
+[[multiplexer.server]]
+server = "gateway-bridge:1701"
+gateway_id_prefixes = []
+
+[[multiplexer.server]]
+server = "eu1.cloud.thethings.network:1700"
+gateway_id_prefixes = []
+uplink_only = true

@@ -1,0 +1,15 @@
+services:
+  openmeteo-bridge:
+    build: .
+    container_name: openmeteo-bridge
+    networks:
+      - lora-network 
+    environment:
+      - MQTT_HOST=mosquitto  # Assure-toi que c'est le nom de ton service Mosquitto
+      - LAT=XX.XXXXXX  # À CHANGER: latitude
+      - LON=XX.XXXXXX  # À CHANGER: longitude
+    restart: unless-stopped
+
+networks:
+  lora-network:
+    external: true  # On indique que le réseau existe déjà

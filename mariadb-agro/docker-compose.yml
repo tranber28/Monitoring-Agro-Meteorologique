@@ -1,0 +1,28 @@
+# Projet mariadb-agro
+# ⚠️ À CONFIGURER: Modifier les mots de passe ci-dessous
+
+services:
+  mariadb:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mariadb-agro
+    restart: unless-stopped
+    networks:
+      - lora-network
+    environment:
+      - MARIADB_ROOT_PASSWORD=XXXX  # À CHANGER: mot de passe root
+      - MARIADB_DATABASE=agro_monitoring
+      - MARIADB_USER=XXXX  # À CHANGER: utilisateur BDD
+      - MARIADB_PASSWORD=XXXX  # À CHANGER: mot de passe BDD
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb-data:/var/lib/mysql
+
+networks:
+  lora-network:
+    external: true
+
+volumes:
+  mariadb-data:

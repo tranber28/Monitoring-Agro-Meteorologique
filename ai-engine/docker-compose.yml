@@ -1,0 +1,31 @@
+# Projet ai-engine
+# ⚠️ À CONFIGURER: Modifier les mots de passe ci-dessous
+
+version: '3.8'
+
+services:
+  ai-engine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai-engine
+    restart: unless-stopped
+    networks:
+      - lora-network
+    environment:
+      - MQTT_BROKER=mosquitto
+      - USE_DB=true
+      - DB_HOST=mariadb-agro
+      - DB_USER=XXXX  # À CHANGER: utilisateur BDD
+      - DB_PASSWORD=XXXX  # À CHANGER: mot de passe BDD
+      - DB_NAME=agro_monitoring
+      - MIN_SAMPLES=50
+    volumes:
+      - ai-models:/data/models
+
+networks:
+  lora-network:
+    external: true
+
+volumes:
+  ai-models:

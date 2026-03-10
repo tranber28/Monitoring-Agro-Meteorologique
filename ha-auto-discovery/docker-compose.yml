@@ -1,0 +1,17 @@
+services:
+  ha-auto-discovery:
+    image: python:3.11-slim
+    container_name: ha-auto-discovery
+    restart: unless-stopped
+    networks:
+      - lora-network
+    command: >
+      sh -c "pip install paho-mqtt -q && python -u /app/ha-auto-discovery.py"
+    environment:
+      - MQTT_BROKER=mosquitto
+    volumes:
+      - ./ha-auto-discovery.py:/app/ha-auto-discovery.py:ro
+
+networks:
+  lora-network:
+    external: true

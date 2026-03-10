@@ -1,0 +1,57 @@
+# Projet n8n - n8n + postgres
+# ⚠️ À CONFIGURER: Modifier les mots de passe ci-dessous
+
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      - TZ=Europe/Paris
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=XXXX  # À CHANGER: utilisateur n8n
+      - N8N_BASIC_AUTH_PASSWORD=XXXX  # À CHANGER: mot de passe n8n
+      - N8N_HOST=0.0.0.0
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://n8n:5678
+      - GENERIC_TIMEZONE=Europe/Paris
+      - EXECUTIONS_MODE=regular
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=n8n-postgres
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=n8n
+      - DB_POSTGRESDB_USER=XXXX  # À CHANGER: utilisateur BDD
+      - DB_POSTGRESDB_PASSWORD=XXXX  # À CHANGER: mot de passe BDD
+      - N8N_SECURE_COOKIE=false  
+    volumes:
+      - ./data:/home/node/.n8n
+    user: root
+    networks:
+      - lora-network
+    depends_on:
+      n8n-postgres:
+        condition: service_healthy
+  n8n-postgres:
+    image: postgres:16-alpine
+    container_name: n8n-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=n8n
+      - POSTGRES_USER=XXXX  # À CHANGER: utilisateur BDD
+      - POSTGRES_PASSWORD=XXXX  # À CHANGER: mot de passe BDD
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U n8n"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - lora-network
+networks:
+  lora-network:
+    external: true
+    name: lora-network

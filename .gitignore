@@ -1,0 +1,54 @@
+# Secrets et Configs
+secrets.yaml
+*.env
+.env
+mosquitto/config/passwords.txt
+
+# Python & IA
+__pycache__/
+ai-engine/data/*.csv
+.venv/
+
+# IDE
+.vscode/
+.DS_Store
+
+# Hardware
+*-backups/
+
+# Sous-modules/externes
+mosquito-sx1302-lora-receiver/
+
+# LoRa sx1302
+mosquito-sx1302-lora-receiver/logs/
+mosquito-sx1302-lora-receiver/mosquitto/data/
+mosquito-sx1302-lora-receiver/mosquitto/log/
+mosquito-sx1302-lora-receiver/*.o
+mosquito-sx1302-lora-receiver/*.a
+mosquito-sx1302-lora-receiver/bin/
+
+# Données runtime (NE PAS COMMITTER)
+n8n/postgres/
+n8n/data/
+dockge/data/
+weewx/data/
+mosquitto/config/
+portainer_data/
+mariadb-data/
+chirpstack-redis-data/
+ai-models/
+*.log
+*.db
+*.sqlite
+
+# ChirpStack BDD
+chirpstack/data/
+
+# Home Assistant
+homeassistant/config/.storage/
+homeassistant/config/*.log*
+homeassistant/config/*.db*
+
+# Scripts et utilitaires divers
+container-monitor/fix.sh
+mariadb-agro/OLD/

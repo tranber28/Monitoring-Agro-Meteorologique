@@ -1,0 +1,77 @@
+# Projet chirpstack - chirpstack + postgres + redis
+# ⚠️ À CONFIGURER: Modifier les mots de passe ci-dessous
+
+networks:
+  lora-network:
+    external: true
+    name: lora-network
+
+services:
+
+  chirpstack-postgres:
+    image: postgres:14-alpine
+    container_name: chirpstack-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=XXXX  # À CHANGER: utilisateur BDD
+      - POSTGRES_PASSWORD=XXXX  # À CHANGER: mot de passe BDD
+      - POSTGRES_DB=chirpstack
+    volumes:
+      - ./data:/var/lib/postgresql/data:rw
+      - ./init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U chirpstack"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - lora-network
+
+  chirpstack-redis:
+    image: redis:7-alpine
+    container_name: chirpstack-redis
+    restart: unless-stopped
+    command:
+      - redis-server
+      - "--save"
+      - "300"
+      - "1"
+      - "--save"
+      - "60"
+      - "100"
+      - "--appendonly"
+      - "no"
+    volumes:
+      - chirpstack-redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - lora-network
+
+  chirpstack:
+    image: chirpstack/chirpstack:4
+    container_name: chirpstack
+    restart: unless-stopped
+    user: "nobody:nogroup"
+    command: ["--config", "/etc/chirpstack"]
+    environment:
+      - POSTGRESQL_HOST=chirpstack-postgres
+      - REDIS_HOST=chirpstack-redis
+      - MQTT_BROKER_HOST=mosquitto
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./config:/etc/chirpstack:rw
+    depends_on:
+      chirpstack-postgres:
+        condition: service_healthy
+      chirpstack-redis:
+        condition: service_healthy
+    networks:
+      - lora-network
+
+volumes:
+  chirpstack-redis-data:

@@ -1,0 +1,18 @@
+# Projet gateway-bridge
+
+networks:
+  lora-network:
+    external: true
+    name: lora-network
+
+services:
+
+  gateway-bridge:
+    image: chirpstack/chirpstack-gateway-bridge:4
+    container_name: gateway-bridge
+    restart: unless-stopped
+    user: "nobody:nogroup"
+    volumes:
+      - ./config.toml:/etc/chirpstack-gateway-bridge/chirpstack-gateway-bridge.toml:ro
+    networks:
+      - lora-network
